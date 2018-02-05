@@ -22,24 +22,24 @@ iface eno1 inet manual
 
 auto vmbr0
 iface vmbr0 inet static
-	address  62.210.90.94
-	netmask  255.255.255.0
-	gateway  62.210.90.1
-	bridge_ports enp1s0f0
+	address  your_main_ip_address
+	netmask  your_subnet
+	gateway  your_gateway_
+	bridge_ports your_main_interfaces
 	bridge_stp off
 	bridge_fd 0
 #Main Interface
 
 auto vmbr1
 iface vmbr1 inet static
-	address  10.1.1.1
+	address  10.2.2.1
 	netmask  255.255.255.0
-	bridge_ports eno1
+	bridge_ports your_second_interface
 	bridge_stp off
 	bridge_fd 0
 #Internal Network
 
-
+#This will be add ip_forward you server and run the masquarede rule when up this interface
 post-up echo 1 > /proc/sys/net/ipv4/ip_forward
-        post-up   iptables -t nat -A POSTROUTING -s '10.1.1.0/24' -o vmbr0 -j MASQUERADE
-        post-down iptables -t nat -D POSTROUTING -s '10.1.1.0/24' -o vmbr0 -j MASQUERADE
+        post-up   iptables -t nat -A POSTROUTING -s '10.2.2.0/24' -o vmbr0 -j MASQUERADE
+        post-down iptables -t nat -D POSTROUTING -s '10.2.2.0/24' -o vmbr0 -j MASQUERADE
