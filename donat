@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "First check the below rules do not owerwrite existing rules!!!"
+/sbin/iptables -t nat -L
+echo "Enter Protocol type eg: tcp or udp:"
+read proto
+echo "Enter external port this mean high port like 23231:"
+read disport
+echo "Enter your internal ip address this mean your vm ip address:"
+read icip
+echo "Enter your internal port number if you want access ssh you need to write 22:"
+read icport
+
+
+/sbin/iptables -t nat -A PREROUTING -i vmbr0 -p $proto -m $proto --dport $disport -j DNAT --to-destination $icip:$icport
+
+echo 'Nat rules added check new iptables will look like below'\n
+/sbin/iptables -t nat -L

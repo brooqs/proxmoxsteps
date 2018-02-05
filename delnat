@@ -1,0 +1,16 @@
+#!/bin/bash
+echo "________________________________________________________"
+/sbin/iptables -t nat -L --line-numbers
+echo "________________________________________________________"
+echo "Which number of rule to delete?\n"
+echo "Port Number:"
+read portNumber
+
+/sbin/iptables -t nat -D PREROUTING $portNumber
+
+echo "Specified rules deleted check the below is correct"
+
+/sbin/iptables -t nat -L
+
+echo "Iptables rules file updated..."
+/sbin/iptables-save > /root/iptables.rules
